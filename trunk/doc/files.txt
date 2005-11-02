@@ -1,0 +1,16 @@
+Folder /src/
+----------
++ faxprocess.sh
+	- This shell script is the main program. It uses regex.awk to extract the Kundennummer, 
+	gets the customers fax number from the Kundenliste data file and sends the fax.
+	
++ install.sh
+	- This shell script install all necessary files to the system.
+	
++ Kundenliste
+	- This data file contains the mapping between the customer number (Kundennummer) 
+	and the customers fax number.
+	
++ regex.awk
+	- This awk script extracts the Kundennummer from the fax file. The Kundennummer is 
+	used to retrieve the fax number of the customer.

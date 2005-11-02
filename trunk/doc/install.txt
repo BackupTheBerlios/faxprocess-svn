@@ -1,0 +1,12 @@
+Install
+------
+1. Change current directory to ./src/
+2. Execute ./install.sh as root
+3. All necessary files will be installed to /usr/local/share/FaxProcess
+
+Test
+----
+1. Change current directory to .
+2. Execute /usr/local/share/FaxProcess/faxprocess.sh ./data/
+3. Check output of command
+4. Directory ./data/processed should now contain processed *.spl files 

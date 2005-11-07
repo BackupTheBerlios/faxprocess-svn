@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!-- ====================================================================== 
+     07.11.2005 16:26:02
+
+     FaxProcess
+                   
+     Oliver Zein                                                                
+     ====================================================================== -->
+<project name="FaxProcess" default="default">
+    <description>
+            have to do this ;-)
+    </description>
+
+    <!-- ================================= 
+          target: default
+         ================================= -->
+    <target name="default" depends="package" description="faxprocess">        
+    </target>
+	
+	<target name="cleanup">
+		<delete file="faxprocess.tgz"/>
+	</target>
+    
+    <!-- ================================= 
+          target: package
+         ================================= -->
+    <target name="package" depends="cleanup">
+    	<tar destfile="faxprocess.tgz" excludes="**/*.svn" basedir="." compression="gzip">
+    	</tar>
+    </target>
+
+</project>

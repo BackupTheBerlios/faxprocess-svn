@@ -25,6 +25,14 @@ if ! checkPrereqs a2ps ; then
 	exit 1
 fi
 
+if checkPrereqs bzip2 ; then
+	BZIP2=1
+fi
+
+if checkPrereqs zip ; then
+	ZIP=1
+fi
+
 # check, if any files available - eles exit gracefuly
 if ! ls $1/$FILE_PATTERN > /dev/null 2>&1 ; then
 	exit 0
@@ -39,6 +47,17 @@ for file in $( ls $1/*.spl); do
 	getCustFaxnumber $file
 	a2ps -1 --no-header --print-anyway=yes $file -o $file.ps
 	echo sendfax -a4 -m -d $FAX_NUMBER $file.ps
-	mv $file $1/processed
+	if [ $BZIP2 -eq 1 ] ; then
+		bzip2 $file
+		mv $file.bz2 $1/processed
+	else
+		if [ $ZIP -eq 1 ] ; then
+			zip -j -D -m $file.zip $file
+			mv $file.zip $1/processed
+		else
+			mv $file $1/processed
+		fi
+	fi
+	
 	rm $file.ps
 done

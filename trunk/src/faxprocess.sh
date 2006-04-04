@@ -44,20 +44,34 @@ if [ ! -d $1/processed ] ; then
 fi
 
 for file in $( ls $1/*.spl); do
-	getCustFaxnumber $file
-	a2ps -1 --no-header --print-anyway=yes $file -o $file.ps
-	echo sendfax -a4 -m -d $FAX_NUMBER $file.ps
-	if [ $BZIP2 -eq 1 ] ; then
-		bzip2 $file
-		mv $file.bz2 $1/processed
-	else
-		if [ $ZIP -eq 1 ] ; then
-			zip -j -D -m $file.zip $file
-			mv $file.zip $1/processed
+	getCustFaxnumber $file	
+
+	if [ $FAX_NUMBER ] ; then
+		a2ps -1 --no-header --print-anyway=yes $file -o $file.ps
+		echo sendfax -a4 -m -d $FAX_NUMBER $file.ps
+		if [ $BZIP2 -eq 1 ] ; then
+			bzip2 $file
+			mv $file.bz2 $1/processed
 		else
-			mv $file $1/processed
+			if [ $ZIP -eq 1 ] ; then
+				zip -j -D -m $file.zip $file
+				mv $file.zip $1/processed
+			else
+				mv $file $1/processed
+			fi
 		fi
+	
+		rm $file.ps
+	else
+		echo "No number found for file $file" >> $1/processed/error.log
+		
+		# create bad directory if it not already exists 
+		if [ ! -d $1/processed/bad ] ; then
+			mkdir $1/processed/bad
+		fi
+
+		# move source file to bad directory
+		mv $file $1/processed/bad
 	fi
 	
-	rm $file.ps
 done
